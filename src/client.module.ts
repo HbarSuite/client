@@ -24,7 +24,7 @@ import { ClientModuleAsyncOptions } from './interfaces/client-options.interface'
  *     ClientModule.forRootAsync({
  *       imports: [ConfigModule],
  *       useFactory: (configService: ConfigService) => ({
- *         baseUrl: configService.get('CLIENT_BASE_URL'),
+ *         baseUrl: configService.get('BASE_URL'),
  *         operator: {
  *           accountId: configService.get('OPERATOR_ID'),
  *           privateKey: configService.get('OPERATOR_KEY'),

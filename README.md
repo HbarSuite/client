@@ -44,7 +44,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
     ClientModule.forRootAsync({
       imports: [ConfigModule],
       useFactory: (configService: ConfigService) => ({
-        baseUrl: configService.get('CLIENT_BASE_URL'),
+        baseUrl: configService.get('BASE_URL'),
         operator: {
           accountId: configService.get('OPERATOR_ID'),
           privateKey: configService.get('OPERATOR_KEY'),
@@ -179,7 +179,7 @@ npm run compodoc:coverage
 Core dependencies:
 - `@hsuite/smart-network-types`: "2.0.0"
 - `@hsuite/auth-types`: "2.0.0"
-- `@hsuite/nestjs-swagger`: "2.0.0"
+- `@hsuite/nestjs-swagger`: "1.0.3"
 - `@hsuite/smart-config`: "2.0.0"
 
 Development dependencies:

@@ -1,4 +1,4 @@
-import { Inject, Injectable, Logger, OnModuleInit } from '@nestjs/common'
+import { Inject, Injectable, OnModuleInit } from '@nestjs/common'
 import * as axiosCookieJarSupport from 'axios-cookiejar-support'
 import { ISmartNetwork } from '@hsuite/smart-network-types'
 import { Auth, IAuth } from '@hsuite/auth-types'
@@ -6,6 +6,7 @@ import { PrivateKey } from '@hashgraph/sdk'
 import { HttpService } from '@nestjs/axios'
 import { SmartConfigService } from '@hsuite/smart-config'
 import { IClient } from '@hsuite/client-types'
+import { LoggerHelper } from '@hsuite/helpers/logger.helper'
 
 /**
  * @service ClientService
@@ -43,13 +44,22 @@ import { IClient } from '@hsuite/client-types'
  */
 @Injectable()
 export class ClientService implements OnModuleInit {
-    /** Internal logger instance for service operations */
-    private logger: Logger = new Logger(ClientService.name);
+    /**
+     * Logger instance for the service
+     * @type {LoggerHelper}
+     */
+    private logger: LoggerHelper = new LoggerHelper(ClientService.name);
     
-    /** Stores the authenticated Web3 login response */
+    /**
+     * Stores the authenticated Web3 login response
+     * @type {Auth.Credentials.Web3.Response.Login}
+     */
     private _login: Auth.Credentials.Web3.Response.Login;
     
-    /** Current operator entity containing node and authentication details */
+    /**
+     * Current operator entity containing node and authentication details
+     * @type {ISmartNetwork.IOperator.IEntity}
+     */
     private _operator: ISmartNetwork.IOperator.IEntity;
 
     /**
@@ -145,9 +155,19 @@ export class ClientService implements OnModuleInit {
      * @throws {Error} If connection or authentication fails
      */
     async onModuleInit() {
+        await this.init(this.clientOptions.baseUrl);
+    }
+
+    /**
+     * Initializes the client connection.
+     * 
+     * @param baseUrl - The base URL for the client
+     * @throws {Error} If connection or authentication fails
+     */
+    async init(baseUrl: string): Promise<boolean> {
         try {
-            if(this.clientOptions.baseUrl) {
-                this.httpService.axiosRef.defaults.baseURL = this.clientOptions.baseUrl;
+            if(baseUrl) {
+                this.httpService.axiosRef.defaults.baseURL = baseUrl;
             } else {
                 this.httpService.axiosRef.defaults.baseURL = await this.generateBaseUrl();
             }
@@ -156,11 +176,15 @@ export class ClientService implements OnModuleInit {
                 this.logger.verbose(`trying to connect with ${this.httpService.axiosRef.defaults.baseURL}...`);
                 this._login = await this.connectToNode();
                 this.logger.verbose(`connected to node: ${this.httpService.axiosRef.defaults.baseURL}`);
+                return true;
+            } else {
+                return false;
             }
         } catch (error) {
             this.logger.error(
                 `failed to connect to node: ${this.httpService.axiosRef.defaults.baseURL}: ${error.code}`
             );
+            return false;
         }
     }
 
