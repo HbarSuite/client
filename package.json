@@ -1,6 +1,6 @@
 {
     "name": "@hsuite/client",
-    "version": "2.0.1",
+    "version": "2.0.2",
     "main": "index.js",
     "types": "index.d.ts",
     "isPublic": true,
@@ -16,7 +16,7 @@
         "@hsuite/smart-network-types": "^2.0.0",
         "@hsuite/auth-types": "^2.0.0",
         "@hsuite/nestjs-swagger": "^1.0.3",
-        "@hsuite/smart-config": "^2.0.0"
+        "@hsuite/smart-config": "^2.1.0"
     },
     "devDependencies": {
         "@compodoc/compodoc": "^1.1.23"

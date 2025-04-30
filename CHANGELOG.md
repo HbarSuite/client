@@ -17,3 +17,7 @@ All notable changes to this project will be documented in this file.
 - Modified: package.json
 - Modified: src/client.module.ts
 - Modified: src/client.service.ts
+
+## [2.0.2] - 2025-04-30
+
+- Modified: package.json
